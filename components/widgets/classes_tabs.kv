@@ -1,0 +1,86 @@
+<ClassesTabs>:
+	#:import VideoPlayer kivy.uix.videoplayer.VideoPlayer
+    size_hint: 1, 1
+    pos_hint: {'center_x': .5, 'center_y': .5}
+    do_default_tab: False
+
+    TabbedPanelItem:
+        text: 'Videos'
+        background_color: (0,0,0,0)
+        background_normal: ''
+        canvas.before:
+        	Color:
+        		rgba: (1,0,0,1) if self.state == 'normal' else (.4,0,0,1)
+        	RoundedRectangle:
+        		size: self.size
+        		pos: self.pos
+        		radius: [10]
+        BoxLayout:
+        	background_color: (1,1,1,1)
+        	background_normal: ''
+        	canvas.before:
+				Color:
+					rgba: (1,1,1,1) #if self.state == 'normal' else (0,.4,0,1)
+				Rectangle:
+					size: self.size
+					pos: self.pos
+			#Label:
+				#text: 'coming soon'
+				#color: 'black'
+
+			BoxLayout:
+				orientation: "vertical"
+				#Video:
+					#source: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+				VideoPlayer:
+					#id: videos
+					#source: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+					#source: 'C:/Users/user/Desktop/clone/Instagram Clone in Python _ Kivy   KivyMD _ UI _ Speed Code(720P_HD).mp4'
+					state: "pause"
+					#options: {"fit_mode": "contain", "eos": "loop"}
+					#Button:
+						#text: "Back"
+						#on_release: root.go_back()
+    TabbedPanelItem:
+        text: 'Live'
+        background_color: (0,0,0,0)
+        background_normal: ''
+        canvas.before:
+        	Color:
+        		rgba: (.3,.8,0,1) if self.state == 'normal' else (0,.4,0,1)
+        	RoundedRectangle:
+        		size: self.size
+        		pos: self.pos
+        		radius: [10]
+        BoxLayout:
+        	background_color: (1,1,1,1)
+        	background_normal: ''
+        	canvas.before:
+				Color:
+					rgba: (1,1,1,1) #if self.state == 'normal' else (0,.4,0,1)
+				Rectangle:
+					size: self.size
+					pos: self.pos
+        	orientation: 'vertical'
+            Label:
+                text: '{coming soon}'
+                color: 'black'
+            RoundedButton:
+                text: 'Watch Later'
+                size_hint: .5,.1
+                pos_hint: {'center_x': .5, 'center_y': 1}
+    TabbedPanelItem:
+        text: 'Lectures'
+        background_normal: ''
+        background_color: (0,0,0,0)
+        canvas.before:
+        	Color:
+        		rgba: (.3,.8,.2,1) if self.state == 'normal' else (0,.4,0,1)
+        	RoundedRectangle:
+        		size: self.size
+        		pos: self.pos
+        		radius: [10]
+        RstDocument:
+            text:
+                '\\n'.join(("coming soon", "-----------",
+                "You are in the third tab."))

@@ -1,0 +1,15 @@
+<ChapterList>:
+	viewclass: 'EachChapterButton'
+	id: rv
+	data: self.subject_details
+	#scroll_type: ['bars', 'content']
+    #bar_width: 10
+	RecycleBoxLayout:
+		orientation: 'vertical'
+		padding: dp(10)
+		spacing: dp(10)
+		default_size: None, dp(60)
+		default_size_y: 1, None
+		size_hint_y: None
+		height: self.minimum_height
+
