@@ -25,9 +25,9 @@ Builder.load_file('components/widgets/chapter_list.kv')
 Builder.load_file('components/widgets/classes_tabs.kv')
 Builder.load_file('components/widgets/ninth_window_decorator.kv')
 Builder.load_file('components/widgets/custom_text_input.kv')
-Builder.load_file('components/widgets/admin_panel.kv')
+Builder.load_file('components/widgets/admin_upload_panel.kv')
 
-imagelink = []
+image_link = []
 
 
 class MainWindow(Screen):
@@ -129,7 +129,6 @@ class NinthWindow(Screen):
     def viewpdfimage(self, link):
         global imagelink
         imagelink.append(link)
-        print(imagelink)
         sm = App.get_running_app().root.ids.sm
         # sm.get_screen('Tenth').ids.image = link
         sm.current = 'Tenth'
@@ -140,8 +139,7 @@ class TenthWindow(Screen):
 
     def on_enter(self):
         global imagelink
-        for a in imagelink:
-            self.image_source = str(a)
+        self.image_source = str(imagelink[0])
         imagelink.pop(0)
 
 

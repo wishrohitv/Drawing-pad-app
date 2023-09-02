@@ -157,7 +157,7 @@ BoxLayout:
     name: "Third"
     #:import ChapterList components.widgets.chapter_list.ChapterList
 
-    BoxLayout:
+    CustomLimeCardBaxLayout:
     	orientation: 'vertical'
 
 		NavBarPdf:
@@ -535,11 +535,11 @@ BoxLayout:
 
 <AdminPanel>:
 	name: "Admin"
-	#:import AdminTabs components.widgets.admin_panel.AdminTabs
+	#:import UploadTabs components.widgets.admin_upload_panel.UploadTabs
 	BoxLayout:
 		orientation: "vertical"
-		adaptive_height: True
-		AdminNavBar:
-			pos_hint: {'top': 1}
-		AdminTabs:
-			pos_hint: {'top': 2}
+		UploadTabs:
+
+
+
+

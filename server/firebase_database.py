@@ -7,12 +7,12 @@ data = {
 }
 
 # post data
-# firebase.post('classmate-classes-f9057-default-rtdb/subjects', data)
+firebase.post('Subjects', data)
 # get data
-result = firebase.get('classmate-classes-f9057-default-rtdb/subjects', '')
+#result = firebase.get('classmate-classes-f9057-default-rtdb/subjects', '')
 # for i in result.keys():
 #     print(result[i]['class'])
 
-for i in result:
-    print(result[i]['chapter_index'])
+#for i in result:
+    #print(result[i]['chapter_index'])
 
