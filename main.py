@@ -27,7 +27,7 @@ Builder.load_file('components/widgets/ninth_window_decorator.kv')
 Builder.load_file('components/widgets/custom_text_input.kv')
 Builder.load_file('components/widgets/admin_upload_panel.kv')
 
-image_link = []
+imagelink = []
 
 
 class MainWindow(Screen):
