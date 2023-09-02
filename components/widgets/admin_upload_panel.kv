@@ -1,0 +1,72 @@
+<UploadTabs>:
+	padding: 2
+	spacing: 5
+	orientation: "vertical"
+	Label:
+		text: "upload panel"
+		font_size: sp(20)
+		id: notice
+		height: dp(30)
+		size_hint_y: None
+		color: "yellow" if self.text == "upload panel" else "red"
+		font_name: "Poppins-Medium"
+	AdminNavBar:
+	BoxLayout:
+		Label:
+			text: "Select Subject"
+		Spinner:
+			background_color: "blue"
+			text: "select"
+			id: subject
+			values: "Math", "Physics", "Chemistry", "Biology", "GK", "CA"
+	BoxLayout:
+		Label:
+			text: "Select Class"
+		Spinner:
+			text: "select"
+			id: class_
+			values: "12th", "11th", "10th", "9th", "8th", "For all"
+	BoxLayout:
+		Label:
+			text: "Chapter Name"
+		TextInput:
+			id: chapter_name
+			font_size: sp(20)
+	BoxLayout:
+		Label:
+			text: "Subject Detail"
+		TextInput:
+			id: desc
+			font_size: sp(20)
+	BoxLayout:
+		Label:
+			text: "Upload Date"
+		Label:
+			id: upload_date
+	BoxLayout:
+		Label:
+			text: "Select File here"
+		Button:
+			text: "select"
+			on_release:
+				root.select_file()
+	BoxLayout:
+		BoxLayout:
+			padding: 3
+			Image:
+				source: "assets/navigation_tools/text_file_icon.png"
+				size: dp(40), dp(40)
+				size_hint: (.15, 1)
+			TextInput:
+				size_hint: (.85, 1)
+				id: file_dir
+				active: False
+
+		Button:
+			text: "Submit"
+			on_release:
+				root.pushToDb(subject.text, class_.text, chapter_name.text, desc.text)
+
+<CustomBoxLayout@BoxLayout>
+	height: dp(40)
+	size_hint_y: None

@@ -1,0 +1,14 @@
+<CustomTextInput@TextInput>:
+	background_normal: "assets/images/transparent.png"
+	background_active: self.background_normal
+	hint_text_color: "#FBFFFB"
+	padding: 8
+	size_hint_y: None
+	height: dp(40)
+	canvas.after:
+		Color:
+			rgba: 1,1,.005, .07
+		RoundedRectangle:
+			pos: self.pos
+			size: self.size
+			radius: [8,]
