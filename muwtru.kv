@@ -87,7 +87,7 @@ BoxLayout:
 <SecondWindow>:
     name: "Second"
 	#:import NavBar components.widgets.nav_bar.NavBar
-	#:import HomeSubjects components.widgets.home_subjects.HomeSubjects
+	##:import HomeSubjects components.widgets.home_subjects.HomeSubjects
     GridLayout:
         cols: 1
         rows: 3
@@ -143,6 +143,61 @@ BoxLayout:
             do_scroll_y: True
             do_scroll_x: False
             HomeSubjects:
+            	cols: 2
+				rows: 4
+				padding: 20
+				spacing: 20
+				size_hint_y: None
+				height: dp(900)
+				pos_hint: {'center_x': .5, 'center_y': .4}
+
+				Button:
+					background_normal: "assets/images/lectures.png"
+					on_release:
+						root.forthWB()
+						# app.root.current = "Forth"
+						# root.manager.transition.direction = "right"
+
+				Button:
+					background_normal: "assets/images/math.png"
+					on_release:
+						root.thirdWB("Mathematics")
+						# app.root.current = "Third"
+						# root.manager.transition.direction = "right"
+
+				Button:
+					background_normal: "assets/images/physics.png"
+					on_release:
+						root.thirdWB("Physics  ")
+						#app.root.ids['sm'].current = "Fifth"
+						# root.manager.transition.direction = "right"
+
+				Button:
+					background_normal: "assets/images/chemistry.png"
+					on_release:
+						root.thirdWB("Chemistry")
+						# root.manager.transition.direction = "right"
+
+				Button:
+					background_normal: "assets/images/bio.png"
+					on_release:
+						root.thirdWB("Biology")
+						# root.manager.transition.direction = "right"
+
+				Button:
+					background_normal: "assets/images/gk.png"
+					on_release:
+						root.thirdWB("G.K.          ")
+						# root.manager.transition.direction = "right"
+
+				Button:
+					background_normal: "assets/images/ca.png"
+					on_release:
+						root.thirdWB("Current Afair")
+						# root.manager.transition.direction = "right"
+
+		# end scroll-view
+
 
         BoxLayout:
             size_hint_y: None
@@ -155,21 +210,87 @@ BoxLayout:
 
 <ThirdWindow>:
     name: "Third"
-    #:import ChapterList components.widgets.chapter_list.ChapterList
+    ##:import ChapterList components.widgets.chapter_list.ChapterList
 
     CustomLimeCardBaxLayout:
     	orientation: 'vertical'
 
-		NavBarPdf:
+		BoxLayout:
 			height: dp(50)
 			size_hint_y: None
+			BoxLayout:
+				size_hint: 1, 1
+				pos_hint: {'top': 1}
+				background_normal: ''
+				canvas.before:
+					Color:
+						rgba: (107/255, 22/255, 138/155, 1)
+					RoundedRectangle:
+						size: self.size
+						pos: self.pos
+						radius: [12]
+				BoxLayout:
+					size_hint: .25, 1
+					ReturnHomeButton:
+						background_normal: 'assets/navigation_tools/arrow_back.png'
+						size_hint: None, None
+						size: dp(50), dp(50)
+						pos_hint: {'center_y': .5}
+
+				Label:
+					id: nav_name
+					size_hint: .45, 1
+					pos_hint: {'center_x': .2}
+					font_size: sp(20)
+					font_name: 'Poppins-Bold'
+				BoxLayout:
+					size_hint: .3, 1
+					Spinner:
+						text: "12th"
+						background_color: (255, 255, 255, 0)
+						values: '11th', '10th', '9th', '8th'
+
+					Button:
+						background_normal: "assets/navigation_tools/vertical_icon.png"
+						size_hint: None, None
+						size: dp(50), dp(50)
+						pos_hint: {'center_y': .5}
+						on_press:
+							app.root.current = 'Seventh'
+							#root.manager.transition.direction = "left"
 		BoxLayout:
 			orientation: 'vertical'
 			padding: dp(10)
 			spacing: dp(10)
 			BoxLayout:
 				orientation: 'vertical'
-				ChapterList:
+				RecycleView:
+					viewclass: 'EachChapterButton'
+					id: rv
+					data: root.subject_details
+					#scroll_type: ['bars', 'content']
+					#bar_width: 10
+					RecycleBoxLayout:
+						orientation: 'vertical'
+						padding: dp(10)
+						spacing: dp(10)
+						default_size: None, dp(60)
+						default_size_y: 1, None
+						size_hint_y: None
+						height: self.minimum_height
+<EachChapterButton>:
+	font_name: "Poppins-Medium"
+	background_color: (0,0,0,0)
+	ripple_behavior: True
+	background_normal: ''
+	width: dp(265)
+	canvas.before:
+		Color:
+			rgba: (169/255,22/255,255,1) if self.state == 'normal' else (255/255,71/255,197/255,1)
+		RoundedRectangle:
+			size: self.size
+			pos: self.pos
+			radius: [18]
 
 <ForthWindow>:
 	#:import ClassesTabs components.widgets.classes_tabs.ClassesTabs
@@ -374,20 +495,6 @@ BoxLayout:
 					app.root.current = "Third"
 					root.manager.transition.direction = "left"
 
-<EachChapterButton>:
-	font_name: "Poppins-Medium"
-	background_color: (0,0,0,0)
-	ripple_behavior: True
-	background_normal: ''
-	size_hint_x: 1
-	width: dp(260)
-	canvas.before:
-		Color:
-			rgba: (169/255,22/255,255,1) if self.state == 'normal' else (255/255,71/255,197/255,1)
-		RoundedRectangle:
-			size: self.size
-			pos: self.pos
-			radius: [18]
 
 <NinthWindow>:
 	name: "Ninth"
@@ -399,10 +506,12 @@ BoxLayout:
 			pos_hint: {"top": 1}
 			size_hint: (1, None)
 			height: dp(50)
-			ReturnHomeButton:
+			Button:
 				background_normal: 'assets/navigation_tools/arrow_back.png'
 				size_hint: None, None
 				size: dp(50), dp(50)
+				on_release:
+					app.root.ids['sm'].current = "Third"
 			Label:
 				pos_hint: {'center_y': .5}
 				id: chapter_index

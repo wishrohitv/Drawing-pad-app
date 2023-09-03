@@ -1,4 +1,5 @@
 <UploadTabs>:
+	id: my
 	padding: 2
 	spacing: 5
 	orientation: "vertical"
@@ -44,12 +45,15 @@
 		Label:
 			id: upload_date
 	BoxLayout:
-		Label:
-			text: "Select File here"
-		Button:
-			text: "select"
-			on_release:
-				root.select_file()
+		#Label:
+			#text: "Select File here"
+		FileChooserListView:
+            id: filechooser
+            on_selection: my.select_file(filechooser.selection)
+			#Button:
+				#text: "select"
+				#on_release:
+					#root.select_file()
 	BoxLayout:
 		BoxLayout:
 			padding: 3
@@ -60,10 +64,11 @@
 			TextInput:
 				size_hint: (.85, 1)
 				id: file_dir
-				active: False
+				disabled: True
 
 		Button:
-			text: "Submit"
+			text: "Submit" if self.state == "normal" else "wait..."
+			background_color: "grey" if self.state == "normal" else "green"
 			on_release:
 				root.pushToDb(subject.text, class_.text, chapter_name.text, desc.text)
 

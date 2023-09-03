@@ -21,5 +21,5 @@ try:
     user = auth.sign_in_with_email_and_password("rohit@gmail.com", "hola")
     print('successfully signed')
 except Exception as e:
-    g = json.loads(e)
+    g = json.loads(str(e))
     print(g)

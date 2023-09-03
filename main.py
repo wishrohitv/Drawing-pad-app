@@ -4,11 +4,14 @@ import kivy
 import wikipedia
 from kivy.app import App
 from kivy.lang import Builder
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, ListProperty
 from kivy.uix.button import Button
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
 from kivy.core.text import LabelBase
+from kivy.clock import Clock
+from kivy.core.image import ImageLoader
 
 kivy.require('2.1.0')
 
@@ -20,14 +23,15 @@ LabelBase.register(name='Poppins',
 
 Builder.load_file('components/widgets/nav_bar.kv')
 Builder.load_file('components/widgets/rounded_button.kv')
-Builder.load_file('components/widgets/home_subjects.kv')
-Builder.load_file('components/widgets/chapter_list.kv')
+# Builder.load_file('components/widgets/home_subjects.kv')
+# Builder.load_file('components/widgets/chapter_list.kv')
 Builder.load_file('components/widgets/classes_tabs.kv')
 Builder.load_file('components/widgets/ninth_window_decorator.kv')
 Builder.load_file('components/widgets/custom_text_input.kv')
 Builder.load_file('components/widgets/admin_upload_panel.kv')
 
-imagelink = []
+subject_name = []
+image_link = []
 
 
 class MainWindow(Screen):
@@ -54,29 +58,66 @@ class MainWindow(Screen):
 
 class SecondWindow(Screen):
     greeting = StringProperty()
-    current_time = time.localtime().tm_hour
-    if current_time < 12:
-        greeting = 'Good Morning'
-    elif 12 <= current_time < 18:
-        greeting = 'Good Afternoon'
-    elif 18 <= current_time <= 20:
-        greeting = 'Good Evening '
-    elif 20 < current_time <= 24:
-        greeting = 'Good Night   '
 
-    # def on_enter(self):
-    #     self.update_greeting()
-    #
-    # def update_greeting(self):
-    #     current_time = time.localtime().tm_hour
-    #     greeting = 'Good Morning..' if current_time < 12 else 'Good Afternoon'
-    #     self.ids.navbar.add_widget(NavBar(
-    #         navbar_greeting=greeting
-    #     ))
+    def on_pre_enter(self):
+        self.greeting_time()
+        Clock.schedule_once(self.greeting_message, 4)
+
+    def greeting_time(self):
+        current_time = time.localtime().tm_hour
+        if current_time < 12:
+            self.greeting = 'Good Morning'
+        elif 12 <= current_time < 18:
+            self.greeting = 'Good Afternoon'
+        elif 18 <= current_time <= 20:
+            self.greeting = 'Good Evening '
+        elif 20 < current_time <= 24:
+            self.greeting = 'Good Night   '
+
+    def greeting_message(self, *args):
+        self.greeting = 'by Rahul sir!   '
+
+    def forthWB(self):
+        sm = App.get_running_app().root.ids.sm
+        sm.current = "Forth"
+
+    def thirdWB(self, subject):
+        global subject_name
+        subject_name.append(subject)
+        sm = App.get_running_app().root.ids.sm
+        sm.get_screen('Third').ids.nav_name.text = f"{subject}         "
+        sm.current = "Third"
+
+
+# second windows widget
+class HomeSubjects(GridLayout):
+    pass
 
 
 class ThirdWindow(Screen):
-    pass
+    subject_details = ListProperty([])
+
+    def on_pre_enter(self, *args):
+        # print(subject_name[-1])
+        # with open('demo/demo.json') as f:
+        #     data = json.load(f)
+        #     self.subject_details = [
+        #         {'text': str(x), 'chapter_name': data[x]['name'], 'chapter_upload_date': data[x]["upload_date"],
+        #          'link': data[x]['link']} for x in data]
+        from firebase import firebase
+        # classmate-classes
+        firebase = firebase.FirebaseApplication('https://classmate-classes-f9057-default-rtdb.firebaseio.com/', None)
+        data = firebase.get(subject_name[-1], '')
+        # for i in data.keys():
+            # print(data[i])
+        #     print(data[i]["chapter_name"])
+        #     print(data[i]["class"])
+        #     print(data[i]["desc"])
+        #     print(data[i]["upload_date"])
+
+        self.subject_details = [
+                {'text': f"{str(x)} {data[x]['class']}", 'chapter_name': data[x]['chapter_name'], 'upload_date': data[x]["upload_date"],
+                 'link': data[x]['data_link']} for x in data.keys()]
 
 
 class ForthWindow(Screen):
@@ -84,7 +125,7 @@ class ForthWindow(Screen):
 
 
 class FifthWindow(Screen):
-    def on_enter(self):
+    def on_pre_enter(self):
         with open("java_j.txt", 'r') as f:
             java = f.read()
             self.ids.java.text = str(java)
@@ -120,15 +161,15 @@ class EachChapterButton(Button):
         sm = App.get_running_app().root.ids.sm
         sm.get_screen('Ninth').ids.chapter_index.text = self.text
         sm.get_screen('Ninth').ids.chapter_name.text = self.chapter_name
-        sm.get_screen('Ninth').ids.chapter_upload_date.text = f"{self.chapter_upload_date} on uploaded"
+        sm.get_screen('Ninth').ids.chapter_upload_date.text = f"{self.upload_date} on uploaded"
         sm.get_screen('Ninth').ids.pdfimage.text = self.link
         sm.current = 'Ninth'
 
 
 class NinthWindow(Screen):
     def viewpdfimage(self, link):
-        global imagelink
-        imagelink.append(link)
+        global image_link
+        image_link.append(link)
         sm = App.get_running_app().root.ids.sm
         # sm.get_screen('Tenth').ids.image = link
         sm.current = 'Tenth'
@@ -137,10 +178,10 @@ class NinthWindow(Screen):
 class TenthWindow(Screen):
     image_source = StringProperty()
 
-    def on_enter(self):
-        global imagelink
-        self.image_source = str(imagelink[0])
-        imagelink.pop(0)
+    def on_pre_enter(self):
+        global image_link
+        self.image_source = str(image_link[0])
+        image_link.pop(0)
 
 
 class SearchWindow(Screen):
