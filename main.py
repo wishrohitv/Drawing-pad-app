@@ -12,6 +12,8 @@ from kivy.core.window import Window
 from kivy.core.text import LabelBase
 from kivy.clock import Clock
 from kivy.core.image import ImageLoader
+from data_requests.data_request import json_data
+from firebase import firebase
 
 kivy.require('2.1.0')
 
@@ -97,17 +99,15 @@ class HomeSubjects(GridLayout):
 class ThirdWindow(Screen):
     subject_details = ListProperty([])
 
-    def on_pre_enter(self, *args):
-        # print(subject_name[-1])
+    def on_enter(self, *args):
         # with open('demo/demo.json') as f:
         #     data = json.load(f)
         #     self.subject_details = [
-        #         {'text': str(x), 'chapter_name': data[x]['name'], 'chapter_upload_date': data[x]["upload_date"],
-        #          'link': data[x]['link']} for x in data]
-        from firebase import firebase
+        #             {'text': str(x), 'chapter_name': data[x]['name'], 'upload_date': data[x]["upload_date"],
+        #              'link': data[x]['link']} for x in data]
         # classmate-classes
-        firebase = firebase.FirebaseApplication('https://classmate-classes-f9057-default-rtdb.firebaseio.com/', None)
-        data = firebase.get(subject_name[-1], '')
+        firebase_data = firebase.FirebaseApplication('https://classmate-classes-f9057-default-rtdb.firebaseio.com/', None)
+        data = firebase_data.get(subject_name[-1], '')
         # for i in data.keys():
             # print(data[i])
         #     print(data[i]["chapter_name"])
@@ -115,9 +115,24 @@ class ThirdWindow(Screen):
         #     print(data[i]["desc"])
         #     print(data[i]["upload_date"])
 
-        self.subject_details = [
-                {'text': f"{str(x)} {data[x]['class']}", 'chapter_name': data[x]['chapter_name'], 'upload_date': data[x]["upload_date"],
+        try:
+            self.subject_details = [
+                {'text': f"{data[x]['chapter_name']} {data[x]['class']}", 'chapter_name': data[x]['chapter_name'],
+                 'upload_date': data[x]["upload_date"],
                  'link': data[x]['data_link']} for x in data.keys()]
+        except Exception as f:
+            print(f)
+
+
+class EachChapterButton(Button):
+    def on_release(self):
+        sm = App.get_running_app().root.ids.sm
+        sm.get_screen('Ninth').ids.chapter_index.text = self.text
+        sm.get_screen('Ninth').ids.chapter_name.text = self.chapter_name
+        # sm.get_screen('Ninth').ids.desc.text = self.chapter_name
+        sm.get_screen('Ninth').ids.upload_date.text = f"{self.upload_date}\non uploaded"
+        sm.get_screen('Ninth').ids.pdfimage.text = self.link
+        sm.current = 'Ninth'
 
 
 class ForthWindow(Screen):
@@ -154,16 +169,6 @@ class SeventhWindow(Screen):
 
 class EighthWindow(Screen):
     pass
-
-
-class EachChapterButton(Button):
-    def on_release(self):
-        sm = App.get_running_app().root.ids.sm
-        sm.get_screen('Ninth').ids.chapter_index.text = self.text
-        sm.get_screen('Ninth').ids.chapter_name.text = self.chapter_name
-        sm.get_screen('Ninth').ids.chapter_upload_date.text = f"{self.upload_date} on uploaded"
-        sm.get_screen('Ninth').ids.pdfimage.text = self.link
-        sm.current = 'Ninth'
 
 
 class NinthWindow(Screen):

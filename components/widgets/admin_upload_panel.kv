@@ -2,7 +2,8 @@
 	id: my
 	padding: 2
 	spacing: 5
-	orientation: "vertical"
+	orientation: "vertical"#
+	AdminNavBar:
 	Label:
 		text: "upload panel"
 		font_size: sp(20)
@@ -11,7 +12,6 @@
 		size_hint_y: None
 		color: "yellow" if self.text == "upload panel" else "red"
 		font_name: "Poppins-Medium"
-	AdminNavBar:
 	BoxLayout:
 		Label:
 			text: "Select Subject"
@@ -19,7 +19,7 @@
 			background_color: "blue"
 			text: "select"
 			id: subject
-			values: "Math", "Physics", "Chemistry", "Biology", "GK", "CA"
+			values: "Mathematics", "Physics", "Chemistry", "Biology", "G,K", "Current Afair"
 	BoxLayout:
 		Label:
 			text: "Select Class"
@@ -45,15 +45,23 @@
 		Label:
 			id: upload_date
 	BoxLayout:
-		#Label:
-			#text: "Select File here"
+		orientation: "vertical"
+		Label:
+			text: "Select File here"
+			size_hint: (1, None)
+			height: dp(30)
+		#Button:
+			#text: "select"
+			#on_release:
+				#root.select_file()
+	CustomNavCard:
+		height: dp(210)
+		size_hint: (1, None)
 		FileChooserListView:
-            id: filechooser
-            on_selection: my.select_file(filechooser.selection)
-			#Button:
-				#text: "select"
-				#on_release:
-					#root.select_file()
+			id: filechooser
+			on_selection: my.select_file(filechooser.selection)
+
+
 	BoxLayout:
 		BoxLayout:
 			padding: 3

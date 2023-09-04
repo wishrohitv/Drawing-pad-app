@@ -42,7 +42,10 @@ file_local_dir = []
 
 class UploadTabs(BoxLayout):
     def select_file(self, filename):
-        print(filename)
+        global file_local_dir
+        self.ids.file_dir.text = filename[0]
+        file_local_dir.append(filename[0])
+
     # def select_file(self):
     #     self.ids.upload_date.text = str(date)
     #     filechooser.open_file(on_selection=self.selected)
@@ -66,6 +69,7 @@ class UploadTabs(BoxLayout):
         pyre = pyrebase.initialize_app(config)
 
         global file_local_dir
+        print(len(file_local_dir))
 
         if subject == "select":
             self.ids.notice.text = "choose subject first!"
@@ -77,11 +81,12 @@ class UploadTabs(BoxLayout):
             self.ids.notice.text = "Write about Chapter!"
         elif len(file_local_dir) == 0:
             self.ids.notice.text = "Please select file!"
-        elif self.ids.file_dir.text == "":
-            self.ids.notice.text = "Please select File!"
+        # elif self.ids.file_dir.text == "":
+        #     self.ids.notice.text = "Please select File!"
         else:
             try:
                 file = file_local_dir[-1]
+                print(file)
                 # media database
                 storage = pyre.storage()
                 storage.child(f"{str(data_id)}/{class_}").put(file)
@@ -94,13 +99,12 @@ class UploadTabs(BoxLayout):
                 self.ids.chapter_name.text = ""
                 self.ids.desc.text = ""
                 self.ids.file_dir.text = ""
-                notice_popup()
+                # notice_popup()
             except Exception as f:
                 # self.ids.notice.text = f
                 print(f)
 
-
-def notice_popup():
-    popup = Popup(title="notice", text='Successfully uploaded to database!',
-                  size_hint=(None, None), size=(250, 400))
-    popup.open()
+# def notice_popup():
+#     popup = Popup(title="notice", text='Successfully uploaded to database!',
+#                   size_hint=(None, None), size=(250, 400))
+#     popup.open()
