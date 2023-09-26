@@ -1,9 +1,3 @@
-# import datetime
-#
-# current_time = datetime.datetime.now().time()
-# greeting = 'Good Morning..' if current_time.hour < 12 else 'Good Afternoon'
-#
-# print(greeting)
 import os
 import webbrowser
 from kivy.app import App
@@ -15,21 +9,21 @@ from kivy.utils import platform
 
 
 class PDFViewerApp(App):
-    def open_pdf_external_viewer_android(self, pdf_file_path):
-        if platform == 'android':
-            PythonActivity = autoclass('org.kivy.android.PythonActivity')
-            Intent = autoclass('android.content.Intent')
-            Uri = autoclass('android.net.Uri')
-
-            file_uri = Uri.parse(pdf_file_path)
-            intent = Intent(Intent.ACTION_VIEW)
-            intent.setDataAndType(file_uri, 'application/pdf')
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-
-            current_activity = cast('android.app.Activity', PythonActivity.mActivity)
-            current_activity.startActivity(intent)
-        else:
-            print("Opening PDF externally is only supported on Android.")
+    # def open_pdf_external_viewer_android(self, pdf_file_path):
+    #     if platform == 'android':
+    #         PythonActivity = autoclass('org.kivy.android.PythonActivity')
+    #         Intent = autoclass('android.content.Intent')
+    #         Uri = autoclass('android.net.Uri')
+    #
+    #         file_uri = Uri.parse(pdf_file_path)
+    #         intent = Intent(Intent.ACTION_VIEW)
+    #         intent.setDataAndType(file_uri, 'application/pdf')
+    #         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    #
+    #         current_activity = cast('android.app.Activity', PythonActivity.mActivity)
+    #         current_activity.startActivity(intent)
+    #     else:
+    #         print("Opening PDF externally is only supported on Android.")
 
     def build(self):
         layout = BoxLayout(orientation='vertical')
