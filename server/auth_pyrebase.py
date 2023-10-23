@@ -17,9 +17,8 @@ firebase = pyrebase.initialize_app(config)
 
 auth = firebase.auth()
 try:
-    # user = auth.create_user_with_email_and_password('rohit@gmail.com', 'holaid')
-    user = auth.sign_in_with_email_and_password("rohit@gmail.com", "hola")
-    print('successfully signed')
+    user = auth.create_user_with_email_and_password('rohit@gmail.com', 'holaid')
+    # user = auth.sign_in_with_email_and_password("rohit@gmail.com", "holaid")
+    # print('successfully signed')
 except Exception as e:
-    g = json.loads(str(e))
-    print(g)
+    print(e)
