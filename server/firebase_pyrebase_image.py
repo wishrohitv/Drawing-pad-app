@@ -16,24 +16,41 @@ config = {
     "serviceAccount": f,
     "databaseUrl": "https://classmate-classes-f9057-default-rtdb.firebaseio.com/"
 }
-firebase = pyrebase.initialize_app(config)
-
-from plyer import filechooser
+firebase_ = pyrebase.initialize_app(config)
 
 
-def file():
-    filechooser.open_file(on_selection=selected)
+# from plyer import filechooser
+#
+#
+# def file():
+#     filechooser.open_file(on_selection=selected)
+#
+#
+# def selected(selection):
+#     print(selection[0])
+#     storage = firebase.storage()
+#     storage.child('hello').put(selection[0])
+#
+#
+# file()
 
+# from firebase import firebase
+#
+# data = firebase.FirebaseApplication("https://classmate-classes-f9057-default-rtdb.firebaseio.com/", None)
+#
+# d = data.get("Physics", "")
+# f = []
+# for x in d.keys():
+#     s = (d[x]["data_link"])
+#     f.append(s)
+# print(f)
 
-def selected(selection):
-    print(selection[0])
-    storage = firebase.storage()
-    storage.child('hello').put(selection[0])
-
-
-file()
-
-# storage = firebase.storage()
+# download
+storage = firebase_.storage()
 # storage.child('hello').put(selected)
 
-# storage.download('pdffile.pdf', 'pnew.pdf')
+storage.download(f"{f[0]}/11th", "pda.jpg.pdf.jpg")
+#
+# def image_load(lind_id, class_):
+#     storage = firebase_.storage()
+#     storage.download(f"{lind_id}/{class_}", f"chapter_visual_data/{lind_id}.jpg")

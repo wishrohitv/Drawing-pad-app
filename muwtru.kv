@@ -70,7 +70,7 @@ BoxLayout:
 				color: 'black'
 				font_name: 'Poppins-Bold.ttf'
 				on_release:
-					root.login(email, passw)
+					root.login(email.text, passw.text)
 					root.manager.transition.direction = "left"
 
 			Button:
@@ -417,20 +417,32 @@ BoxLayout:
 <SeventhWindow>:
 	name: "Seventh"
 
-	BoxLayout:
+	RelativeLayout:
+		pos_hint: {"center_x": .5, "center_y": .8}
+		size_hint: None, None
+		height: dp(150)
+		width: dp(150)
 		orientation: 'vertical'
-		FloatLayout:
-			canvas:
+		Image:
+		    id: profile
+			canvas.after:
 				Color:
-					rgb: 1, 1, 1
-				Ellipse:
-					pos: self.center_x-150/2, 400
-					size: 150, 150
-					source: root.profile
-					angle_start: 0
-					angle_end: 360
+					rgba: (1,1,1,1)
+				RoundedRectangle:
+					texture: self.texture
+					source: ""
+					size: self.size
+					pos: self.pos
+					radius: [50]
+			canvas.before:
+				Color:
+					rgba: (1,0,0,1)
+				Line:
+					width: 1.2
+					circle: (self.center_x, self.center_y, min(self.width+8, self.height+8)/2, 0,360)
 
 	Label:
+	    id: user_name
 		text: 'Virat Kohli'
 		font_name: 'Poppins-Bold'
 		color: '#0D0615'
@@ -457,6 +469,8 @@ BoxLayout:
 			text: 'About app'
 			#background_color: '#FF8DE0'
 			size_hint: (1, .2)
+			on_release:
+				app.root.ids['sm'].current = "Fifth"
 		RoundedButton:
 			text: 'Downloads latest version'
 			#background_color: '#FF8DE0'
@@ -516,7 +530,8 @@ BoxLayout:
 				pos_hint: {'center_y': .5}
 				id: chapter_index
 				font_name: "Poppins-Bold"
-			Widget:
+			Label:
+				id: class_
 				size_hint: None, None
 				size: dp(50), dp(50)
 		CustomWhiteCard:
@@ -564,7 +579,7 @@ BoxLayout:
 					Button:
 						text: "view"
 						on_release:
-							root.viewpdfimage(pdfimage.text)
+							root.viewpdfimage(pdfimage.text, class_.text)
 
 
 

@@ -1,6 +1,7 @@
 import json
 import time
 import kivy
+import requests
 import wikipedia
 from kivy.app import App
 from kivy.lang import Builder
@@ -11,9 +12,9 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
 from kivy.core.text import LabelBase
 from kivy.clock import Clock
-from kivy.core.image import ImageLoader
-from data_requests.data_request import json_data
-from firebase import firebase
+# from data_requests.data_request import json_data
+from pdf_file_request.pdf_file_request import image_load
+from database.database import get_chapter_database
 
 kivy.require('2.1.0')
 
@@ -37,25 +38,19 @@ image_link = []
 
 
 class MainWindow(Screen):
+    # def on_enter(self, *args):
+    #     Clock.schedule_once(self.change_screen(), 1)
+    #
+    # def change_screen(self):
+    #     self.manager.current = "Second"
 
-    def login(self, name, passw):
+    def login(self, email, passw):
         self.manager.current = 'Second'
-        # from firebase import firebase
-        # firebase = firebase.FirebaseApplication('https://classmate-classes-default-rtdb.firebaseio.com/', None)
+        # pop = Popup(title='Invalid Form',
+        #             content=Label(text='data did\'nt match!.'),
+        #             size_hint=(None, None), size=(400, 200))
         #
-        # result = firebase.get('classmate-classes-default-rtdb/User', '')
-        # for i in result.keys():
-        #     if result[i]['Email'] == name.text:
-        #         if result[i]['Password'] == passw.text:
-        #
-        #             print(result[i]['Email'], 'logged!')
-
-        # else:
-        #     pop = Popup(title='Invalid Form',
-        #                 content=Label(text='data did\'nt match!.'),
-        #                 size_hint=(None, None), size=(400, 200))
-        #
-        #     pop.open()
+        # pop.open()
 
 
 class SecondWindow(Screen):
@@ -106,22 +101,18 @@ class ThirdWindow(Screen):
         #             {'text': str(x), 'chapter_name': data[x]['name'], 'upload_date': data[x]["upload_date"],
         #              'link': data[x]['link']} for x in data]
         # classmate-classes
-        firebase_data = firebase.FirebaseApplication('https://classmate-classes-f9057-default-rtdb.firebaseio.com/', None)
-        data = firebase_data.get(subject_name[-1], '')
-        # for i in data.keys():
-            # print(data[i])
-        #     print(data[i]["chapter_name"])
-        #     print(data[i]["class"])
-        #     print(data[i]["desc"])
-        #     print(data[i]["upload_date"])
 
+        data = get_chapter_database(subject_name[-1])
+        print(data)
+        print(data["chapter_name"])
         try:
             self.subject_details = [
-                {'text': f"{data[x]['chapter_name']} {data[x]['class']}", 'chapter_name': data[x]['chapter_name'],
+                {'text': f"{data[x]['chapter_name']} {data[x]['class']}", "class_": data[x]['class'],
+                 'chapter_name': data[x]['chapter_name'],
                  'upload_date': data[x]["upload_date"],
-                 'link': data[x]['data_link']} for x in data.keys()]
+                 'link': data[x]['data_link']} for x in data.items()]
         except Exception as f:
-            print(f)
+            print(f, "me")
 
 
 class EachChapterButton(Button):
@@ -129,7 +120,7 @@ class EachChapterButton(Button):
         sm = App.get_running_app().root.ids.sm
         sm.get_screen('Ninth').ids.chapter_index.text = self.text
         sm.get_screen('Ninth').ids.chapter_name.text = self.chapter_name
-        # sm.get_screen('Ninth').ids.desc.text = self.chapter_name
+        sm.get_screen('Ninth').ids.class_.text = self.class_
         sm.get_screen('Ninth').ids.upload_date.text = f"{self.upload_date}\non uploaded"
         sm.get_screen('Ninth').ids.pdfimage.text = self.link
         sm.current = 'Ninth'
@@ -164,7 +155,11 @@ class SixthWindow(Screen):
 
 
 class SeventhWindow(Screen):
-    profile = "C:/Users/user/Downloads/rahul.jpg"
+    profile = StringProperty()
+
+    def on_enter(self, *args):
+        self.ids.profile.source = "assets/images/chemistry.png"
+        self.ids.user_name.color = "blue"
 
 
 class EighthWindow(Screen):
@@ -172,9 +167,10 @@ class EighthWindow(Screen):
 
 
 class NinthWindow(Screen):
-    def viewpdfimage(self, link):
+    def viewpdfimage(self, link, class_):
         global image_link
         image_link.append(link)
+        image_link.append(class_)
         sm = App.get_running_app().root.ids.sm
         # sm.get_screen('Tenth').ids.image = link
         sm.current = 'Tenth'
@@ -185,8 +181,8 @@ class TenthWindow(Screen):
 
     def on_pre_enter(self):
         global image_link
-        self.image_source = str(image_link[0])
-        image_link.pop(0)
+        image_load(image_link[0], image_link[1])
+        self.image_source = "hii"  # f"chapter_visual_data/{image_link[0]}.jpg"
 
 
 class SearchWindow(Screen):

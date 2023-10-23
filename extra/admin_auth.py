@@ -1,10 +1,19 @@
-import json
+import firebase_admin
+from firebase_admin import credentials, auth
 
-a = ["rohit"]
-for i in a:
-    print(i)
-print([i for i in a])
+cred = credentials.Certificate('serviceAccount.json')
+firebase_admin.initialize_app(cred)
 
-with open('o.json') as f:
-    data = json.load(f)
-    print([{'text': x, 'name': data[x]['name']} for x in data])
+
+email = input("enter email: ")
+password = input("enter pass: ")
+name = input("enter name: ")
+
+try:
+    user = auth.create_user(email=email, email_verified=True, password=password, display_name=name)
+    print('{0} created successfully'.format(user.uid))
+except Exception as f:
+    print(f)
+
+
+
