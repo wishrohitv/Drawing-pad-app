@@ -46,7 +46,6 @@ class UploadTabs(BoxLayout):
         else:
             try:
                 file = file_local_dir[-1]
-                # print(file)
                 # media database
                 upload_new_chapter_to_database(file, data_id, class_, subject, chapter_name, desc, date)
                 # bucket = storage.bucket()
