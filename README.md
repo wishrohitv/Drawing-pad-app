@@ -1,4 +1,4 @@
-Minimul cross platform drawing app with kivy
+Minimal cross platform drawing app with kivy
 
 
 
