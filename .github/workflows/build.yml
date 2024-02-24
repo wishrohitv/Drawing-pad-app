@@ -11,9 +11,12 @@ jobs:
       - name: Build with Buildozer
         uses: ArtemSBulgakov/buildozer-action@v1
         id: buildozer
+      - uses: actions/setup-java@v4
         with:
+          distribution: '<distribution>'
+          java-version: 17
           workdir: .
-          command: sudo /usr/bin/openjdk-17-jdk && python3 -m pip install cython==0.29.33 && pip3 install cython==0.29.33 && buildozer android debug
+          command: sudo /usr/bin/python3 -m pip install cython==0.29.33 && pip3 install cython==0.29.33 && buildozer android debug
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
