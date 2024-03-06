@@ -18,9 +18,9 @@ jobs:
           release: '17'
           version: '17.0.1'
           global: true
-     # - name: Set JAVA_HOME
-        #run: echo "JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))" >> $GITHUB_ENV
-      
+      - name: Set JAVA_HOME
+        run: export PATH=$PATH:~/.local/bin/
+        
       - name: Build with Buildozer
         uses: ArtemSBulgakov/buildozer-action@v1
         id: buildozer
