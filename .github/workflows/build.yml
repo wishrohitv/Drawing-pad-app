@@ -18,8 +18,10 @@ jobs:
           release: '17'
           version: '17.0.1'
           global: true
-      - name: Set JAVA_HOME
-        run: export PATH=$PATH:~/.local/bin/
+          targets: 'JDK_X;JAVA_HOME'
+     # - name: Set JAVA_HOME
+        #run: export PATH=$PATH:~/.local/bin/
+        #run: set JAVA_HOME=Java\jdk-17
         
       - name: Build with Buildozer
         uses: ArtemSBulgakov/buildozer-action@v1
