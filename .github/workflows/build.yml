@@ -34,7 +34,7 @@ jobs:
         uses: ArtemSBulgakov/buildozer-action@v1
         id: buildozer
         with:
-          command: 'sudo /usr/bin/python3 -m pip install cython==0.29.33 && pip install buildozer && buildozer android debug'
+          command: 'sudo /usr/bin/python3 -m pip install cython==0.29.33 && pip3 install buildozer && buildozer android debug'
       
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
