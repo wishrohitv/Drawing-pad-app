@@ -11,17 +11,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: 'Set up archived Oracle JDK 17.0.1'
-        uses: oracle-actions/setup-java@v1
-        with:
-          website: 'oracle.com'
-          release: '17'
-          version: '17.0.1'
+      # - name: 'Set up archived Oracle JDK 17.0.1'
+      #   uses: oracle-actions/setup-java@v1
+      #   with:
+      #     website: 'oracle.com'
+      #     release: '17'
+      #     version: '17.0.1'
       - name: print java home
         run: echo $JAVA_HOME
       
-      - name: Set JAVA_HOME
-        run: export JAVA_HOME= "/opt/hostedtoolcache/Java_jdkfile_jdk/17.0.1/x64"
+      # - name: Set JAVA_HOME
+      #   run: export JAVA_HOME= "/opt/hostedtoolcache/Java_jdkfile_jdk/17.0.1/x64"
         
       - name: Build with Buildozer
         uses: ArtemSBulgakov/buildozer-action@v1
