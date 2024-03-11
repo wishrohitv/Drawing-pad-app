@@ -19,8 +19,16 @@ jobs:
       - name: print java home
         run: echo $JAVA_HOME
       
-      # - name: Set JAVA_HOME
-      #   run: echo "JAVA_HOME=/opt/hostedtoolcache/Java_jdkfile_jdk/17.0.1/x64" >> $GITHUB_ENV
+      - name: Set JAVA_HOME
+        run: echo "JAVA_HOME=/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.10-7/x64" >> $GITHUB_ENV
+
+      - name: Update PATH environment variable
+        run: echo "PATH=$JAVA_HOME/bin:$PATH" >> $GITHUB_ENV
+      
+      - name: Display updated JAVA_HOME and PATH
+        run: |
+          echo "JAVA_HOME is now set to $JAVA_HOME"
+          echo "PATH is now set to $PATH"
         
       - name: Build with Buildozer
         uses: ArtemSBulgakov/buildozer-action@v1
