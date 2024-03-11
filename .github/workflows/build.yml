@@ -19,9 +19,10 @@ jobs:
           version: '17.0.1'
           global: true
           targets: 'JDK_X;JAVA_HOME'
-     - name: Set JAVA_HOME
+      - name: Set JAVA_HOME
         run: export PATH=$PATH:~/opt/hostedtoolcache/Java_jdkfile_jdk/17.0.1/x64
-        #run: set JAVA_HOME=Java\jdk-17
+      - name: java home-rohit
+        run: echo "::set-output name=path::$JAVA_HOME"
         
       - name: Build with Buildozer
         uses: ArtemSBulgakov/buildozer-action@v1
