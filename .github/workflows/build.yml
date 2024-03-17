@@ -26,16 +26,19 @@ jobs:
       - name: Add Java binaries to PATH
         run: echo "export PATH=$JAVA_HOME/bin:$PATH" >> $GITHUB_ENV
         
-      - name: Download and extract Android SDK tools
+      - name: Download and install Android SDK Command-Line Tools
         run: |
-          wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip -O /tmp/sdk-tools.zip
-          mkdir -p $HOME/Android/Sdk
-          unzip -q /tmp/sdk-tools.zip -d $HOME/Android/Sdk
+          mkdir -p $HOME/sdk
+          cd $HOME/sdk
+          wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip -O sdk-tools.zip
+          unzip -q sdk-tools.zip
+          yes | ./tools/bin/sdkmanager --licenses
+          ./tools/bin/sdkmanager "platform-tools" "build-tools;30.0.3"
       
       - name: Add Android SDK tools to PATH
         run: |
-          echo "export ANDROID_HOME=$HOME/Android/Sdk" >> $GITHUB_ENV
-          echo "export PATH=$HOME/Android/Sdk/tools/bin:$PATH" >> $GITHUB_ENV
+          echo "export ANDROID_HOME=$HOME/sdk" >> $GITHUB_ENV
+          echo "export PATH=$HOME/sdk/tools/bin:$PATH" >> $GITHUB_ENV
 
       - name: Load environment variables
         run: source $GITHUB_ENV
