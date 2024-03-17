@@ -10,7 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: update system
-        run: sudo apt update
+        run: |
+          sudo apt-get update
+          sudo apt-get upgrade
+          sudo apt-get dist-upgrade
       - name: Checkout
         uses: actions/checkout@v2
       - name: 'Set up archived temurin JDK 17.0.1'
