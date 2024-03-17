@@ -23,6 +23,14 @@ jobs:
         run: |
           export JAVA_HOME="/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.10-7/x64"
           export PATH="$JAVA_HOME/bin:$PATH" >> $GITHUB_ENV
+      - name: Add Java binaries to PATH
+        run: echo "export PATH=$JAVA_HOME/bin:$PATH" >> $GITHUB_ENV
+        
+      - name: Load environment variables
+        run: source $GITHUB_ENV
+      
+      - name: Check Java version
+        run: java -version
           
       - name: Set up Android SDK
         run: |
