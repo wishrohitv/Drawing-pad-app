@@ -17,45 +17,10 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: print java home
-        run: echo $JAVA_HOME
-      
-      - name: Set JAVA_HOME
-        run: |
-          export JAVA_HOME="/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.10-7/x64"
-          export PATH="$JAVA_HOME/bin:$PATH" >> $GITHUB_ENV
-      - name: Add Java binaries to PATH
-        run: echo "export PATH=$JAVA_HOME/bin:$PATH" >> $GITHUB_ENV
-        
-      - name: Download and install Android SDK Command-Line Tools
-        run: |
-          mkdir -p $HOME/sdk
-          cd $HOME/sdk
-          wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip -O sdk-tools.zip
-          unzip -q sdk-tools.zip -d cmdline-tools
-          yes | $HOME/sdk/cmdline-tools/bin/sdkmanager --licenses
-          $HOME/sdk/cmdline-tools/bin/sdkmanager "platform-tools" "build-tools;30.0.3"
-
-      - name: Add Android SDK tools to PATH
-        run: |
-          echo "export ANDROID_HOME=$HOME/sdk" >> $GITHUB_ENV
-          echo "export PATH=$HOME/sdk/tools/bin:$PATH" >> $GITHUB_ENV
-
-      - name: Load environment variables
-        run: source $GITHUB_ENV
+        run: echo $JAVA_HOME 
       
       - name: Check Java version
         run: java -version
-          
-      - name: Set up Android SDK
-        run: |
-          echo "export ANDROID_HOME=/path/to/android/sdk" >> $GITHUB_ENV
-          echo "export PATH=$ANDROID_HOME/tools/bin:$PATH" >> $GITHUB_ENV
-      
-      - name: Load environment variables
-        run: source $GITHUB_ENV
-      
-      - name: Update Java packages
-        run: sdkmanager --update
         
       - name: Build with Buildozer
         uses: ArtemSBulgakov/buildozer-action@v1
