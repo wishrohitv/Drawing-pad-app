@@ -12,8 +12,11 @@ jobs:
       - name: update system
         run: |
           sudo apt-get update
-          sudo apt-get upgrade
-          sudo apt-get dist-upgrade
+          #sudo apt-get upgrade
+          #sudo apt-get dist-upgrade
+          sudo apt-get install openjdk-15-jdk
+          sudo update-alternatives --config java
+
       - name: Checkout
         uses: actions/checkout@v2
       # - name: 'Set up archived temurin JDK 17.0.1'
