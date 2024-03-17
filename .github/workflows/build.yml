@@ -9,6 +9,8 @@ jobs:
     name: Build APKs
     runs-on: ubuntu-latest
     steps:
+      - name: update system
+        run: sudo apt update
       - name: Checkout
         uses: actions/checkout@v2
       - name: 'Set up archived temurin JDK 17.0.1'
