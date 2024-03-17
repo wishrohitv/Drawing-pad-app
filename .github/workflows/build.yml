@@ -32,8 +32,8 @@ jobs:
           cd $HOME/sdk
           wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip -O sdk-tools.zip
           unzip -q sdk-tools.zip -d cmdline-tools
-          yes | ./cmdline-tools/bin/sdkmanager --licenses
-          ./cmdline-tools/bin/sdkmanager "platform-tools" "build-tools;30.0.3"
+          yes | $HOME/sdk/cmdline-tools/bin/sdkmanager --licenses
+          $HOME/sdk/cmdline-tools/bin/sdkmanager "platform-tools" "build-tools;30.0.3"
 
       - name: Add Android SDK tools to PATH
         run: |
