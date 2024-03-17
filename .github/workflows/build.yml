@@ -15,7 +15,11 @@ jobs:
           #sudo apt-get upgrade
           #sudo apt-get dist-upgrade
           sudo apt-get install openjdk-17-jdk
-          2 | sudo update-alternatives --config java
+          # Run the update-alternatives command and select option 2
+          echo -e "2\n" | sudo update-alternatives --config java
+          
+          # Confirm the selection
+          echo "Option 2 selected for java."
 
       - name: Checkout
         uses: actions/checkout@v2
