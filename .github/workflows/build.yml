@@ -22,7 +22,10 @@ jobs:
       - name: Set JAVA_HOME
         run: |
           export JAVA_HOME="/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.10-7/x64"
-          export PATH="$JAVA_HOME/bin:$PATH"
+          export PATH="$JAVA_HOME/bin:$PATH" >> $GITHUB_ENV
+      - name: Update Java packages
+        run: |
+          source $GITHUB_ENV
           sdkmanager --update
         
       - name: Build with Buildozer
