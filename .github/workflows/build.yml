@@ -16,18 +16,18 @@ jobs:
           #sudo apt-get dist-upgrade
           sudo apt-get install openjdk-17-jdk
           # Run the update-alternatives command and select option 2
-          echo -e "1\n" | sudo update-alternatives --config java
+          #echo -e "1\n" | sudo update-alternatives --config java
           
           # Confirm the selection
           echo "Option 2 selected for java."
 
       - name: Checkout
         uses: actions/checkout@v2
-      # - name: 'Set up archived temurin JDK 17.0.1'
-      #   uses: actions/setup-java@v2
-      #   with:
-      #     distribution: 'temurin'
-      #     java-version: '17'
+      - name: 'Set up archived temurin JDK 17.0.1'
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '17'
       - name: print java home
         run: echo $JAVA_HOME 
       
