@@ -1,49 +1,50 @@
-name: Build
-
-on:
-  push:
-  pull_request:
+name: Build APK
+on: [push,pull_request]
 
 jobs:
   build-android:
-    name: Build APKs
+    name: Build for Android
     runs-on: ubuntu-latest
     steps:
-      - name: update system
-        run: |
-          sudo apt-get update
-          #sudo apt-get upgrade
-          #sudo apt-get dist-upgrade
-          sudo apt-get install openjdk-17-jdk
-          # Run the update-alternatives command and select option 2
-          #echo -e "1\n" | sudo update-alternatives --config java
-          
-          # Confirm the selection
-          echo "Option 2 selected for java."
-
       - name: Checkout
         uses: actions/checkout@v2
-      - name: 'Set up archived temurin JDK 17.0.1'
+
+      - name: Set up JDK 17
         uses: actions/setup-java@v2
         with:
-          distribution: 'temurin'
-          java-version: '17'
-      - name: print java home and add home
+          java-version: 17
+          distribution: 'adopt'
+
+      - name: Get Date
+        id: get-date
         run: |
-          echo $JAVA_HOME 
-          echo "JAVA_HOME=/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.10-7/x64" >> $GITHUB_ENV
-      
-      - name: Check Java version
-        run: java -version
+          echo "::save-state name=date::$(/bin/date -u "+%Y%m%d")"
+        shell: bash
+
+      - name: Cache Buildozer global directory
+        uses: actions/cache@v2
+        with:
+          path: .buildozer_global
+          key: buildozer-global-${{ hashFiles('buildozer.spec') }} # Replace with your path
+
+      - uses: actions/cache@v2
+        with:
+          path: .buildozer
+          key: ${{ runner.os }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('buildozer.spec') }}
+
         
       - name: Build with Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
-        id: buildozer
-        with:
-          command: 'sudo /usr/bin/python3 -m pip install cython==0.29.33 && pip3 install cython==0.29.33 && buildozer android debug'
-      
+        run: |
+          pip3 install --user --upgrade buildozer Cython virtualenv
+          export PATH=$PATH:~/.local/bin/
+          export APP_ANDROID_ACCEPT_SDK_LICENSE=1
+          export BUILDOZER_WARN_ON_ROOT=0
+          sudo apt update
+          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
+          cd ${{ github.workspace }}
+          buildozer android debug
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: package-project-eyesight
-          path: ${{ steps.buildozer.outputs.filename }}
+          name: package
+          path: bin/*.apk
